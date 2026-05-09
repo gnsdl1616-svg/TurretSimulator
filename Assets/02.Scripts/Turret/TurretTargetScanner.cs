@@ -66,7 +66,7 @@ public class TurretTargetScanner : MonoBehaviour
             currentTarget = null;
             return;
         }
-
+        
         // Physics.OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results, int layerMask)
         // position에서 radius 범위 안에 targetLayer로 지정된 Collider를 가진 오브젝트 수를 int로 반환
         int hitCount = Physics.OverlapSphereNonAlloc(

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2031953265757634275}
   - component: {fileID: 3529851431558732739}
   - component: {fileID: 3259436121675289847}
+  - component: {fileID: 2168569431776797082}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Untagged
@@ -127,6 +128,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484ea34d7ec98bf4a90f70debee71925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  moveSpeed: 2
+  moveSpeed: 5
   reachDistance: 0.5
-  deathDuration: 0.25
+  deathEffect: {fileID: 2168569431776797082}
+--- !u!114 &2168569431776797082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461547944889685634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13da52804de99eb43ba45b4a154469f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathEffect
+  deathDuration: 0.5
+  deathMarkerLifeTimeSeconds: 0.5
+  aimPoint: {fileID: 0}

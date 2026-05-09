@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -7,20 +8,27 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float reachDistance = 0.5f;
 
     [Header("Death")]
-    [SerializeField] private float deathDuration = 0.25f;
+    [SerializeField] private EnemyDeathEffect deathEffect;
 
     private EnemyPool ownerPool;
     private Transform moveTarget;
     private Collider enemyCollider;
 
     private Vector3 originalScale;
-    private float deathTimer;
-    private bool isDying;
+    // private float deathTimer;
+    private bool isDying = false;
+
+    public bool IsDying => isDying;
 
     private void Awake()
     {
         enemyCollider = GetComponent<Collider>();
         originalScale = transform.localScale;
+
+        if (deathEffect == null)
+        {
+            deathEffect = GetComponent<EnemyDeathEffect>();
+        }
     }
 
     public void Init(EnemyPool pool, Transform target)
@@ -29,7 +37,7 @@ public class Enemy : MonoBehaviour
         moveTarget = target;
 
         isDying = false;
-        deathTimer = 0f;
+        // deathTimer = 0f;
         transform.localScale = originalScale;
 
         if (enemyCollider != null)
@@ -42,7 +50,7 @@ public class Enemy : MonoBehaviour
     {
         if (isDying)
         {
-            TickDeath();
+            //TickDeath();
             return;
         }
 
@@ -58,9 +66,10 @@ public class Enemy : MonoBehaviour
         }
 
         Vector3 direction = moveTarget.position - transform.position;
-        direction.y = 0f;
+        Vector3 directionZeroY = direction;
+        directionZeroY.y = 0f;
 
-        if (direction.sqrMagnitude <= reachDistance * reachDistance)
+        if (directionZeroY.sqrMagnitude <= reachDistance * reachDistance)
         {
             ReturnToPool();
             return;
@@ -83,15 +92,27 @@ public class Enemy : MonoBehaviour
         }
 
         isDying = true;
-        deathTimer = 0f;
+        // deathTimer = 0f;
 
         if (enemyCollider != null)
         {
             enemyCollider.enabled = false;
         }
+
+        StartCoroutine(DeathRoutine());
     }
 
-    private void TickDeath()
+    private IEnumerator DeathRoutine()
+    {
+        if (deathEffect != null)
+        {
+            yield return deathEffect.DeathEffectRoutine();
+        }
+
+        ReturnToPool();
+    }
+
+    /*private void TickDeath()
     {
         deathTimer += Time.deltaTime;
 
@@ -104,7 +125,7 @@ public class Enemy : MonoBehaviour
         {
             ReturnToPool();
         }
-    }
+    }*/
 
     private void ReturnToPool()
     {
